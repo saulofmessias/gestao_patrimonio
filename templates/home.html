@@ -1,0 +1,11 @@
+<h1>🏛️ Patrimônio Capanema</h1>
+<table border="1">
+{% for bem in bens %}
+<tr>
+  <td>{{ bem.numero_tombo }}</td>
+  <td>{{ bem.nome_patrimonio }}</td>
+  <td>{{ bem.secretaria }}</td>
+</tr>
+{% endfor %}
+</table>
+<a href="/admin/">Admin →</a>
