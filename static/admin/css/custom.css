@@ -1,0 +1,29 @@
+#branding h1 { 
+    color: #28a745 !important; 
+    font-family: 'Arial Black';
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.module h2 { 
+    background: linear-gradient(90deg, #28a745, #20c997) !important; 
+    color: white !important; 
+    border-radius: 8px;
+}
+
+.inline-group h2 { margin-top: 0; }
+
+.fieldBox input, .fieldBox select, .fieldBox textarea {
+    border: 2px solid #28a745 !important;
+    border-radius: 8px !important;
+    padding: 8px !important;
+    font-size: 16px;
+}
+
+.submit-row input.default {
+    background: #28a745 !important;
+    border-radius: 25px !important;
+    padding: 12px 30px !important;
+    font-weight: bold;
+}
+
+.addlink { background: #ffc107; color: #000 !important; }
