@@ -1,2 +1,4 @@
-Django==5.0
-gunicorn==22.0
+Django==4.2.11
+gunicorn==22.0.0
+django-import-export==3.3
+django-jazzmin==2.6.0
