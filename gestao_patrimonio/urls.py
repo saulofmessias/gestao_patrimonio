@@ -1,8 +1,8 @@
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from patrimonio.views import lista_bens  # ← IMPORTA VIEW
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('patrimonio/', include('patrimonio.urls')),
-    path('', include('patrimonio.urls')),  # Home = lista bens
+    path('', lista_bens, name='home'),  # ← HOME DIRETO
 ]

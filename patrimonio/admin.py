@@ -3,17 +3,20 @@ from import_export.admin import ImportExportModelAdmin
 from import_export import resources
 from .models import BemPatrimonial
 
+
 class BemResource(resources.ModelResource):
     class Meta:
         model = BemPatrimonial
-        fields = ('numero_tombo', 'numero_nf', 'descricao', 'tipo', 'valor', 
-                 'data_compra', 'localizacao', 'departamento', 'secretaria', 'gerente_patrimonio')
+        fields = ('numero_tombo', 'numero_nf', 'descricao', 'tipo', 'valor',
+                  'data_compra', 'localizacao', 'departamento', 'secretaria', 'gerente_patrimonio')
         export_order = fields
+
 
 @admin.register(BemPatrimonial)
 class BemAdmin(ImportExportModelAdmin):
     resource_class = BemResource
-    list_display = ['numero_tombo', 'descricao', 'tipo', 'valor', 'localizacao', 'secretaria']
+    list_display = ['numero_tombo', 'descricao',
+                    'tipo', 'valor', 'localizacao', 'secretaria']
     list_filter = ['tipo', 'secretaria', 'localizacao', 'departamento']
     search_fields = ['numero_tombo', 'descricao']
     list_editable = ['localizacao']
