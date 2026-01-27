@@ -2,6 +2,14 @@ from django.db import models
 
 
 class BemPatrimonial(models.Model):
+    numero_tombo = models.CharField(max_length=50)  # ← "Nº do patrimônio"
+    nome_patrimonio = models.CharField(max_length=200)  # ← "Nome do Patrimônio" 
+    quantidade = models.IntegerField(default=1)  # NOVO
+    gerente_patrimonios = models.CharField(max_length=100, blank=True)  # NOVO
+    status = models.CharField(max_length=50, default='Disponível')  # NOVO
+    data_compra = models.DateField(blank=True, null=True)  # NOVO
+    criado_em = models.DateTimeField(auto_now_add=True)  # NOVO
+    imagem = models.ImageField(upload_to='patrimonio/', blank=True)  # NOVO
     numero_tombo = models.CharField(max_length=20)
     numero_nf = models.CharField(max_length=30, blank=True)
     descricao = models.CharField(max_length=200)
