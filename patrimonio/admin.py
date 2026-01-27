@@ -16,8 +16,9 @@ class BemResource(resources.ModelResource):
 class BemAdmin(ImportExportModelAdmin):
     resource_class = BemResource
     list_display = ['numero_tombo', 'descricao',
-                    'tipo', 'valor', 'localizacao', 'secretaria']
-    list_filter = ['tipo', 'secretaria', 'localizacao', 'departamento']
-    search_fields = ['numero_tombo', 'descricao']
-    list_editable = ['localizacao']
+                    'tipo', 'valor', 'secretaria', 'status']
+    list_filter = ['secretaria', 'status', 'tipo', 'localizacao']
+    search_fields = ['numero_tombo', 'descricao', 'nome_patrimonio']
+    list_editable = ['localizacao', 'status']
     list_per_page = 25
+    ordering = ['numero_tombo']  # ← Ordena automático
