@@ -16,7 +16,7 @@ class BemResource(resources.ModelResource):
 class BemAdmin(ImportExportModelAdmin):
     resource_class = BemResource
     list_display = ['numero_tombo', 'descricao',
-                    'tipo', 'valor', 'secretaria', 'status']
+                    'tipo', 'valor', 'localizacao', 'secretaria', 'status']
     list_filter = ['secretaria', 'status', 'tipo', 'localizacao']
     search_fields = ['numero_tombo', 'descricao', 'nome_patrimonio']
     list_editable = ['localizacao', 'status']
