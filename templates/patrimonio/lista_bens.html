@@ -1,0 +1,43 @@
+{% extends 'admin/base_site.html' %}
+{% load static %}
+
+{% block title %}Lista de Bens Patrimoniais{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h2>📋 Bens Patrimoniais <a href="{% url 'adicionar_bem' %}" class="btn btn-primary">+ Novo</a></h2>
+    
+    <form method="get" class="mb-3">
+        <div class="input-group">
+            <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Buscar por tombo, nome ou secretaria">
+            <button class="btn btn-outline-secondary">🔍</button>
+        </div>
+    </form>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Tombo</th><th>Nome</th><th>Secretaria</th><th>Status</th><th>Valor</th><th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bem in bens %}
+                <tr>
+                    <td><strong>{{ bem.numero_tombo }}</strong></td>
+                    <td>{{ bem.nome_patrimonio|truncatechars:30 }}</td>
+                    <td>{{ bem.get_secretaria_display }}</td>
+                    <td><span class="badge bg-{% if bem.status == 'disponivel' %}success{% else %}warning{% endif %}">{{ bem.status }}</span></td>
+                    <td>R$ {{ bem.valor|floatformat:2 }}</td>
+                    <td>
+                        <a href="{% url 'editar_bem' bem.pk %}" class="btn btn-sm btn-outline-primary">Editar</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="6" class="text-center">Nenhum bem cadastrado. <a href="{% url 'adicionar_bem' %}">Adicione o primeiro!</a></td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

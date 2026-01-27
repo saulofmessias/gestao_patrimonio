@@ -31,7 +31,7 @@ class BemPatrimonial(models.Model):
     gerente_responsavel = models.CharField(max_length=100, blank=True)
     imagem = models.ImageField(upload_to='patrimonio/', blank=True, null=True)
     
-    criado_em = models.DateTimeField(auto_now_add=True)
+    criado_em = models.DateTimeField(auto_now_add=True, blank=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
