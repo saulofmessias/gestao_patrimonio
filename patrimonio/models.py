@@ -41,7 +41,8 @@ class BemPatrimonial(models.Model):
         ('descartado', 'Descartado'),
     ]
 
-    numero_patrimonio = models.CharField(max_length=20, unique=True)
+    numero_patrimonio = models.CharField(
+        max_length=20, unique=True, blank=True, null=True)
     nome_patrimonio = models.CharField(max_length=200)
     imagem = CloudinaryField(
         'foto', folder='patrimonio_capanema/', blank=True, null=True)
