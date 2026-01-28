@@ -1,16 +1,25 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
 from .models import BemPatrimonial
 
 
-def lista_bens(request):
+@login_required
+def dashboard(request):
+    return render(request, 'dashboard.html')
+
+
+@login_required
+def list_bens(request):
     bens = BemPatrimonial.objects.all()
-    html = """
-    <h1>🏛️ Patrimônio Capanema</h1>
-    <table border="1">
-      <tr><th>Tombo</th><th>Nome</th><th>Secretaria</th></tr>
-    """
-    for bem in bens:
-        html += f"<tr><td>{bem.numero_tombo}</td><td>{bem.nome_patrimonio}</td><td>{bem.secretaria}</td></tr>"
-    html += "</table><a href='/admin/'>Admin</a>"
-    return HttpResponse(html)
+    return render(request, 'list_bens.html', {'bens': bens})
+
+
+@login_required
+def add_bem(request):
+    return render(request, 'add_bem.html')
+
+
+@login_required
+def detail_bem(request, pk):
+    bem = BemPatrimonial.objects.get(numero_patrimonio=pk)
+    return render(request, 'detail_bem.html', {'bem': bem})

@@ -1,8 +1,15 @@
 from django.contrib import admin
-from django.urls import path
-from patrimonio.views import lista_bens  # ← IMPORTA VIEW
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+from patrimonio import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', lista_bens, name='home'),  # ← HOME DIRETO
+    path('', views.dashboard, name='dashboard'),  # Página inicial
+    path('patrimonio/', include('patrimonio.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
