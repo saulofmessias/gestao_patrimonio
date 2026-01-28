@@ -1,5 +1,8 @@
 import os
 from pathlib import Path
+import cloudinary  # NOVO: Para Cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -13,6 +16,13 @@ ALLOWED_HOSTS = [
     '127.0.0.1',
 ]
 
+# NOVO: Config Cloudinary com vars do Render
+cloudinary.config(
+    cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key=os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret=os.environ.get('CLOUDINARY_API_SECRET'),
+)
+
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -23,6 +33,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'import_export',
     'patrimonio',
+    'cloudinary',  # NOVO
+    'cloudinary_storage',  # NOVO
 ]
 
 MIDDLEWARE = [
@@ -77,7 +89,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 STATICFILES_DIRS = [BASE_DIR / 'static']
-#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.ManifestStaticFilesStorage'
+
+# NOVO: Storage Cloudinary para fotos/PDFs
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/media/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -87,4 +102,3 @@ JAZZMIN_SETTINGS = {
     "site_brand": "SIP",
     "copyright": "Saulo Messias 2026"
 }
-
