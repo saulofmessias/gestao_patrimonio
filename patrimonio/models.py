@@ -1,49 +1,64 @@
 from django.db import models
-from cloudinary.models import CloudinaryField  # NOVO: Para Cloudinary
+from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
+
+
+class CategoriaPatrimonio(models.Model):
+    nome = models.CharField(max_length=100)
+    descricao = models.TextField(blank=True)
+
+    def __str__(self):
+        return self.nome
+
+
+class Localizacao(models.Model):
+    nome = models.CharField(max_length=200)
+    endereco = models.TextField(blank=True)
+    cidade = models.CharField(max_length=100, default='Capanema')
+    gerente = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
+
+    def __str__(self):
+        return self.nome
+
+
+class Colaborador(models.Model):
+    nome_completo = models.CharField(max_length=200)
+    email = models.EmailField(unique=True)
+    funcao = models.CharField(max_length=100)
+    ativo = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.nome_completo
 
 
 class BemPatrimonial(models.Model):
-    numero_tombo = models.CharField(max_length=20, unique=True)  # Único!
+    STATUS_CHOICES = [
+        ('disponivel', 'Disponível'),
+        ('alocado', 'Alocado'),
+        ('manutencao', 'Manutenção'),
+        ('perdido', 'Perdido'),
+        ('descartado', 'Descartado'),
+    ]
+
+    numero_patrimonio = models.CharField(max_length=20, unique=True)
     nome_patrimonio = models.CharField(max_length=200)
-    numero_nf = models.CharField(max_length=30, blank=True)
-    descricao = models.TextField(max_length=500)
-    tipo = models.CharField(max_length=50)  # Ex: Computador, Mesa, etc.
+    imagem = CloudinaryField(
+        'foto', folder='patrimonio_capanema/', blank=True, null=True)
     quantidade = models.PositiveIntegerField(default=1)
-    valor = models.DecimalField(
+    categoria = models.ForeignKey(
+        CategoriaPatrimonio, on_delete=models.SET_NULL, null=True)
+    custo_compra = models.DecimalField(
         max_digits=12, decimal_places=2, blank=True, null=True)
     data_compra = models.DateField(blank=True, null=True)
-    status = models.CharField(max_length=30, choices=[
-        ('disponivel', 'Disponível'),
-        ('em_uso', 'Em Uso'),
-        ('manutencao', 'Manutenção'),
-        ('baixa', 'Baixa'),
-        ('inexistente', 'Inexistente'),
-    ], default='disponivel')
-
-    SECRETARIAS = [
-        ('administracao', 'Administração'),
-        ('financas', 'Finanças'),
-        ('educacao', 'Educação'),
-        ('saude', 'Saúde'),
-        ('obras', 'Obras'),
-        ('patrimonio', 'Patrimônio'),
-    ]
-    secretaria = models.CharField(max_length=20, choices=SECRETARIAS)
-    departamento = models.CharField(max_length=100, blank=True)
-    localizacao = models.CharField(max_length=200, blank=True)
-    gerente_responsavel = models.CharField(max_length=100, blank=True)
-
-    # MUDADO: Agora usa Cloudinary ao invés de ImageField local
-    imagem = CloudinaryField(
-        'foto_patrimonio', folder='patrimonio_capanema/', blank=True, null=True)
-
-    criado_em = models.DateTimeField(auto_now_add=True, blank=True)
+    localizacao = models.ForeignKey(
+        Localizacao, on_delete=models.SET_NULL, null=True, blank=True)
+    colaborador_responsavel = models.ForeignKey(
+        Colaborador, on_delete=models.SET_NULL, null=True, blank=True)
+    status = models.CharField(
+        max_length=20, choices=STATUS_CHOICES, default='disponivel')
+    criado_em = models.DateTimeField(auto_now_add=True)
     atualizado_em = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"{self.numero_tombo} - {self.nome_patrimonio}"
-
-    class Meta:
-        ordering = ['numero_tombo']
-        verbose_name = "Bem Patrimonial"
-        verbose_name_plural = "Bens Patrimoniais"
+        return f"{self.numero_patrimonio} - {self.nome_patrimonio}"
