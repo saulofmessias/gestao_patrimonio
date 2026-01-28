@@ -1,30 +1,25 @@
 from django.contrib import admin
-from django import forms
-from import_export.admin import ImportExportModelAdmin
 from .models import BemPatrimonial
-from .resources import BensResource  # Se tiver
-
+from import_export.admin import ImportExportModelAdmin
 
 @admin.register(BemPatrimonial)
-class BemAdmin(ImportExportModelAdmin):
-    resource_class = BensResource  # Se existir, senão remove
-
-    list_display = [
-        'numero_patrimonio',
-        'nome_patrimonio',
-        'departamentos',
-        'status',
-        'localizacao_patrimonio',
-        'categoria_patrimonio'
-    ]
-
-    list_filter = [
-        'departamentos',
-        'status',
-        'categoria_patrimonio',
-        'criado_em'
-    ]
-
-    search_fields = ['numero_patrimonio', 'nome_patrimonio', 'departamentos']
-
-    list_per_page = 20
+class BemPatrimonialAdmin(ImportExportModelAdmin):
+    list_display = ('numero_tombo', 'nome_patrimonio', 'secretaria', 'status', 'data_compra')
+    list_filter = ('secretaria', 'status', 'data_compra')
+    search_fields = ('numero_tombo', 'nome_patrimonio', 'departamento')
+    ordering = ('numero_tombo',)
+    
+    fieldsets = (
+        ('Informações Básicas', {
+            'fields': ('numero_tombo', 'nome_patrimonio', 'numero_nf', 'descricao', 'tipo')
+        }),
+        ('Valores e Datas', {
+            'fields': ('quantidade', 'valor', 'data_compra')
+        }),
+        ('Localização e Responsáveis', {
+            'fields': ('secretaria', 'departamento', 'localizacao', 'gerente_responsavel')
+        }),
+        ('Status e Mídia', {
+            'fields': ('status', 'imagem')
+        }),
+    )
