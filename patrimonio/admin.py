@@ -1,25 +1,43 @@
 from django.contrib import admin
-from .models import BemPatrimonial
 from import_export.admin import ImportExportModelAdmin
+from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
+
 
 @admin.register(BemPatrimonial)
 class BemPatrimonialAdmin(ImportExportModelAdmin):
-    list_display = ('numero_tombo', 'nome_patrimonio', 'secretaria', 'status', 'data_compra')
-    list_filter = ('secretaria', 'status', 'data_compra')
-    search_fields = ('numero_tombo', 'nome_patrimonio', 'departamento')
-    ordering = ('numero_tombo',)
-    
+    list_display = ('numero_patrimonio', 'nome_patrimonio',
+                    'localizacao', 'status', 'data_compra')  # CORRIGIDO
+    list_filter = ('localizacao', 'status', 'data_compra',
+                   'categoria')  # CORRIGIDO
+    search_fields = ('numero_patrimonio', 'nome_patrimonio')  # CORRIGIDO
+    ordering = ('numero_patrimonio',)  # CORRIGIDO
+
     fieldsets = (
         ('Informações Básicas', {
-            'fields': ('numero_tombo', 'nome_patrimonio', 'numero_nf', 'descricao', 'tipo')
+            'fields': ('numero_patrimonio', 'nome_patrimonio', 'categoria', 'imagem')
         }),
         ('Valores e Datas', {
-            'fields': ('quantidade', 'valor', 'data_compra')
+            'fields': ('quantidade', 'custo_compra', 'data_compra')
         }),
         ('Localização e Responsáveis', {
-            'fields': ('secretaria', 'departamento', 'localizacao', 'gerente_responsavel')
+            'fields': ('localizacao', 'colaborador_responsavel')
         }),
-        ('Status e Mídia', {
-            'fields': ('status', 'imagem')
+        ('Status', {
+            'fields': ('status',)
         }),
     )
+
+
+@admin.register(CategoriaPatrimonio)
+class CategoriaPatrimonioAdmin(admin.ModelAdmin):
+    list_display = ('nome',)
+
+
+@admin.register(Localizacao)
+class LocalizacaoAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'gerente')
+
+
+@admin.register(Colaborador)
+class ColaboradorAdmin(admin.ModelAdmin):
+    list_display = ('nome_completo', 'email', 'ativo')
