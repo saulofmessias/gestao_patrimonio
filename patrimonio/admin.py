@@ -1,17 +1,14 @@
 from django.contrib import admin
-from import_export.admin import ImportExportModelAdmin
-from .models import *
+from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
 
 
-@admin.register(BemPatrimonial)
-class BemPatrimonialAdmin(ImportExportModelAdmin):
-    list_display = ('numero_patrimonio', 'nome_patrimonio',
-                    'status', 'localizacao')
-    list_filter = ('status', 'categoria', 'localizacao')
-    search_fields = ('numero_patrimonio', 'nome_patrimonio')
-    list_per_page = 25
+class BemPatrimonialAdmin(admin.ModelAdmin):
+    list_display = ('numero_patrimonio', 'nome_patrimonio', 'status')
+    list_filter = ('status',)
+    search_fields = ('numero_patrimonio',)
 
 
+admin.site.register(BemPatrimonial, BemPatrimonialAdmin)
 admin.site.register(CategoriaPatrimonio)
 admin.site.register(Localizacao)
 admin.site.register(Colaborador)
