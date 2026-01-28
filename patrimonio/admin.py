@@ -1,43 +1,39 @@
 from django.contrib import admin
 from import_export.admin import ImportExportModelAdmin
-from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
+from django.utils.html import format_html
+from .models import *
 
 
 @admin.register(BemPatrimonial)
 class BemPatrimonialAdmin(ImportExportModelAdmin):
-    list_display = ('numero_patrimonio', 'nome_patrimonio',
-                    'localizacao', 'status', 'data_compra')  # CORRIGIDO
-    list_filter = ('localizacao', 'status', 'data_compra',
-                   'categoria')  # CORRIGIDO
-    search_fields = ('numero_patrimonio', 'nome_patrimonio')  # CORRIGIDO
-    ordering = ('numero_patrimonio',)  # CORRIGIDO
+    list_display = ['numero_patrimonio', 'nome_patrimonio',
+                    'status_badge', 'localizacao', 'custo_compra']
+    list_filter = ['status', 'categoria', 'localizacao', 'data_compra']
+    search_fields = ['numero_patrimonio', 'nome_patrimonio']
+    list_per_page = 25
 
-    fieldsets = (
-        ('Informações Básicas', {
-            'fields': ('numero_patrimonio', 'nome_patrimonio', 'categoria', 'imagem')
-        }),
-        ('Valores e Datas', {
-            'fields': ('quantidade', 'custo_compra', 'data_compra')
-        }),
-        ('Localização e Responsáveis', {
-            'fields': ('localizacao', 'colaborador_responsavel')
-        }),
-        ('Status', {
-            'fields': ('status',)
-        }),
-    )
+    def status_badge(self, obj):
+        colors = {
+            'disponivel': 'success',
+            'alocado': 'warning',
+            'manutencao': 'info',
+            'descartado': 'danger'
+        }
+        return format_html('<span class="badge badge-{}">{}</span>',
+                           colors.get(obj.status, 'secondary'), obj.get_status_display())
+    status_badge.short_description = 'Status'
 
 
 @admin.register(CategoriaPatrimonio)
 class CategoriaPatrimonioAdmin(admin.ModelAdmin):
-    list_display = ('nome',)
+    list_display = ['nome']
 
 
 @admin.register(Localizacao)
 class LocalizacaoAdmin(admin.ModelAdmin):
-    list_display = ('nome', 'gerente')
+    list_display = ['nome']
 
 
 @admin.register(Colaborador)
 class ColaboradorAdmin(admin.ModelAdmin):
-    list_display = ('nome_completo', 'email', 'ativo')
+    list_display = ['nome_completo', 'email', 'ativo']
