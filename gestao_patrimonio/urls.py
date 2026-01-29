@@ -1,10 +1,10 @@
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
+from patrimonio import views  # Adicione
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.lista_patrimonio, name='lista_patrimonio'),  # Home
     path('accounts/', include('django.contrib.auth.urls')),
 ]
 
