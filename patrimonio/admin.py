@@ -1,25 +1,23 @@
 from django.contrib import admin
-from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
+from .models import Patrimonio  # Ajuste se model nome diferente
 
-class BemPatrimonialAdmin(admin.ModelAdmin):
-    # Formulário mais simples, campos opcionais
-    fields = ['numero_patrimonio', 'nome_patrimonio', 'imagem', 'quantidade', 'categoria', 
-              'custo_compra', 'data_compra', 'localizacao', 'colaborador_responsavel', 'status']
-    list_display = ['numero_patrimonio', 'nome_patrimonio', 'status']
-    list_filter = ['status', 'categoria', 'criado_em']
-    search_fields = ['nome_patrimonio', 'numero_patrimonio']
+@admin.register(Patrimonio)
+class PatrimonioAdmin(admin.ModelAdmin):
+    list_display = ['nome', 'secretaria', 'valor', 'data_aquisicao', 'status']
+    list_filter = ['secretaria', 'status', 'data_aquisicao']
+    search_fields = ['nome', 'descricao']
     list_editable = ['status']
-
-@admin.register(CategoriaPatrimonio)
-class CategoriaPatrimonioAdmin(admin.ModelAdmin):
-    list_display = ['nome']
-
-@admin.register(Localizacao)
-class LocalizacaoAdmin(admin.ModelAdmin):
-    list_display = ['nome', 'cidade']
-
-@admin.register(Colaborador)
-class ColaboradorAdmin(admin.ModelAdmin):
-    list_display = ['nome_completo', 'email', 'ativo']
-
-admin.site.register(BemPatrimonial, BemPatrimonialAdmin)
+    readonly_fields = ['criado_em']
+    
+    fieldsets = (
+        ('Dados Básicos', {
+            'fields': ('nome', 'secretaria', 'valor')
+        }),
+        ('Detalhes', {
+            'fields': ('descricao', 'data_aquisicao', 'status', 'imagem')
+        }),
+        ('Automático', {
+            'fields': ('criado_em',),
+            'classes': ('collapse',)
+        }),
+    )
