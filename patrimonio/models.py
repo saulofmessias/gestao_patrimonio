@@ -1,7 +1,7 @@
 # ARQUIVO: src/patrimonio/admin.py
-
-from django.contrib import admin
-from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
+from django.db import models
+from cloudinary.models import CloudinaryField
+from django.contrib.auth.models import User
 
 @admin.register(BemPatrimonial)
 class BemPatrimonialAdmin(admin.ModelAdmin):
