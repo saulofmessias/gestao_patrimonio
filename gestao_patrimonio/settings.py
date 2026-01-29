@@ -88,8 +88,8 @@ MEDIA_URL = '/media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 JAZZMIN_SETTINGS = {
-    "site_title": "SM Patrimônio",
+    "site_title": "Patrimônio Público",
     "site_header": "Capanema-PA",
-    "site_brand": "SIP",
+    "site_brand": "DPPM",
     "copyright": "Saulo Messias 2026"
 }
