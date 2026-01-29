@@ -4,7 +4,7 @@ from .models import BemPatrimonial, CategoriaPatrimonio, Colaborador, Localizaca
 
 @admin.register(BemPatrimonial)
 class BemPatrimonialAdmin(admin.ModelAdmin):
-    list_display = ['codigo', 'nome', 'categoria', 'localizacao']
+    list_display = ['id', 'nome', 'categoria', 'localizacao']
     list_filter = ['categoria', 'localizacao']
 
 
