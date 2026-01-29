@@ -1,65 +1,61 @@
-from django.db import models
-from cloudinary.models import CloudinaryField
-from django.contrib.auth.models import User
+# ARQUIVO: src/patrimonio/admin.py
 
+from django.contrib import admin
+from .models import BemPatrimonial, CategoriaPatrimonio, Localizacao, Colaborador
 
-class CategoriaPatrimonio(models.Model):
-    nome = models.CharField(max_length=100)
-    descricao = models.TextField(blank=True)
+@admin.register(BemPatrimonial)
+class BemPatrimonialAdmin(admin.ModelAdmin):
+    # ✅ CORRIGIDO: list_display com campos que REALMENTE EXISTEM
+    list_display = ['numero_patrimonio', 'nome_patrimonio', 'status', 'categoria', 'localizacao']
+    
+    # Filtros na lateral
+    list_filter = ['status', 'categoria', 'criado_em']
+    
+    # Busca rápida
+    search_fields = ['nome_patrimonio', 'numero_patrimonio']
+    
+    # Campos editáveis inline
+    list_editable = ['status']
+    
+    # Paginação
+    list_per_page = 50
+    
+    # Ordenação padrão
+    ordering = ['-criado_em']
+    
+    # Grupos de campos no formulário
+    fieldsets = (
+        ('Informações Básicas', {
+            'fields': ('numero_patrimonio', 'nome_patrimonio', 'quantidade')
+        }),
+        ('Classificação', {
+            'fields': ('categoria', 'status')
+        }),
+        ('Localização e Responsável', {
+            'fields': ('localizacao', 'colaborador_responsavel')
+        }),
+        ('Dados Financeiros', {
+            'fields': ('custo_compra', 'data_compra')
+        }),
+        ('Imagem', {
+            'fields': ('imagem',)
+        }),
+    )
 
-    def __str__(self):
-        return self.nome
+@admin.register(CategoriaPatrimonio)
+class CategoriaPatrimonioAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome', 'descricao']
+    search_fields = ['nome']
 
+@admin.register(Localizacao)
+class LocalizacaoAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome', 'cidade', 'gerente']
+    search_fields = ['nome', 'cidade']
+    list_filter = ['cidade']
 
-class Localizacao(models.Model):
-    nome = models.CharField(max_length=200)
-    endereco = models.TextField(blank=True)
-    cidade = models.CharField(max_length=100, default='Capanema')
-    gerente = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
-
-    def __str__(self):
-        return self.nome
-
-
-class Colaborador(models.Model):
-    nome_completo = models.CharField(max_length=200)
-    email = models.EmailField(unique=True)
-    funcao = models.CharField(max_length=100)
-    ativo = models.BooleanField(default=True)
-
-    def __str__(self):
-        return self.nome_completo
-
-
-class BemPatrimonial(models.Model):
-    STATUS_CHOICES = [
-        ('disponivel', 'Disponível'),
-        ('alocado', 'Alocado'),
-        ('manutencao', 'Manutenção'),
-        ('perdido', 'Perdido'),
-        ('descartado', 'Descartado'),
-    ]
-
-    numero_patrimonio = models.CharField(
-        max_length=20, unique=True, blank=True, null=True)
-    nome_patrimonio = models.CharField(max_length=200)
-    imagem = CloudinaryField(
-        'foto', folder='patrimonio_capanema/', blank=True, null=True)
-    quantidade = models.PositiveIntegerField(default=1)
-    categoria = models.ForeignKey(
-        CategoriaPatrimonio, on_delete=models.SET_NULL, null=True)
-    custo_compra = models.DecimalField(
-        max_digits=12, decimal_places=2, blank=True, null=True)
-    data_compra = models.DateField(blank=True, null=True)
-    localizacao = models.ForeignKey(
-        Localizacao, on_delete=models.SET_NULL, null=True, blank=True)
-    colaborador_responsavel = models.ForeignKey(
-        Colaborador, on_delete=models.SET_NULL, null=True, blank=True)
-    status = models.CharField(
-        max_length=20, choices=STATUS_CHOICES, default='disponivel')
-    criado_em = models.DateTimeField(auto_now_add=True)
-    atualizado_em = models.DateTimeField(auto_now=True)
-
-    def __str__(self):
-        return f"{self.numero_patrimonio} - {self.nome_patrimonio}"
+@admin.register(Colaborador)
+class ColaboradorAdmin(admin.ModelAdmin):
+    list_display = ['id', 'nome_completo', 'email', 'funcao', 'ativo']
+    search_fields = ['nome_completo', 'email']
+    list_filter = ['funcao', 'ativo']
+    list_editable = ['ativo']
