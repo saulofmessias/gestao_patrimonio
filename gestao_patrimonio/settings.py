@@ -69,3 +69,9 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
     {'NAME': 'django.contrib.auth
+     
+LOGIN_URL = '/admin/login/'  # Ou '/login/' se quiser separado
+LOGIN_REDIRECT_URL = '/admin/'  # Após login, vai pro Admin
+LOGOUT_REDIRECT_URL = '/admin/login/'
+
+     
