@@ -8,7 +8,7 @@ import dj_database_url
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-supersecreta123!@#')
-DEBUG = os.environ.get('DEBUG', 'False') == 'True'
+DEBUG = True  # ← TEMPORÁRIO pra ver erro!
 ALLOWED_HOSTS = ['capanema-patrimonio.onrender.com', 'localhost', '127.0.0.1']
 
 cloudinary.config(
@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     'patrimonio',
     'cloudinary',
     'cloudinary_storage',
-    'jazzmin',  # ← JAZZMIN AQUI (pra admin bonito)
+    'jazzmin',
 ]
 
 MIDDLEWARE = [
@@ -68,28 +68,4 @@ WSGI_APPLICATION = 'gestao_patrimonio.wsgi.application'
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
-]
-
-LANGUAGE_CODE = 'pt-br'
-TIME_ZONE = 'America/Sao_Paulo'
-USE_I18N = True
-USE_TZ = True
-
-STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_DIRS = [BASE_DIR / 'static']
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedStaticFilesStorage'
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = '/media/'
-
-DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-JAZZMIN_SETTINGS = {
-    "site_title": "Patrimônio Público",
-    "site_header": "Capanema-PA",
-    "site_brand": "DPPM",
-    "copyright": "Saulo Messias 2026"
-}
+    {'NAME': 'django.contrib.auth
