@@ -10,11 +10,7 @@ SECRET_KEY = 'django-insecure-supersecreta123!@#'
 
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = [
-    'meu-patrimonio-sip.onrender.com',
-    'localhost',
-    '127.0.0.1',
-]
+ALLOWED_HOSTS = ['capanema-patrimonio.onrender.com', 'localhost', '127.0.0.1']
 
 # NOVO: Config Cloudinary com vars do Render
 cloudinary.config(
