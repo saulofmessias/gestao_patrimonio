@@ -10,7 +10,8 @@ class Patrimonio(models.Model):
     descricao = models.TextField(blank=True)
     data_aquisicao = models.DateField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=STATUS, default='ativo')
-    imagem = CloudinaryField(blank=True)
+    imagem = models.ImageField(blank=True, upload_to='patrimonios/')
+  # imagem = CloudinaryField(blank=True)
     criado_em = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):

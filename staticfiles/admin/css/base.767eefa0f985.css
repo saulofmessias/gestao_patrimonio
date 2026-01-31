@@ -1,0 +1,5 @@
+/* SM Informática Style */
+#branding h1 { color: #28a745; font-family: Arial; }
+.module h2 { background: #007cba !important; color: white; }
+.fieldbox input, .fieldbox select { border: 2px solid #28a745; border-radius: 5px; }
+.submit-row input { background: #28a745; color: white; }

@@ -4,25 +4,20 @@ from decouple import config  # pip install python-decouple
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = config('SECRET_KEY', default='django-insecure-seu-secret-aqui-mude')
-
-DEBUG = config('DEBUG', default=False, cast=bool)
-
+SECRET_KEY = config(
+    'SECRET_KEY', default='django-insecure-seu-secret-aqui-mude')
+DEBUG = config('DEBUG', default=True, cast=bool)  # True para local
 ALLOWED_HOSTS = ['*']  # Render
 
 INSTALLED_APPS = [
-    'jazzmin',  # Admin bonito
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'cloudinary_storage',
-    'crispy_forms',
-    'crispy_bootstrap5',
     'patrimonio',  # Seu app bens
-    'django_extensions',
+
 ]
 
 MIDDLEWARE = [
@@ -57,14 +52,11 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'gestao_patrimonio.wsgi.application'
 
+# *** SQLITE PARA TESTAR LOCAL ***
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST'),
-        'PORT': config('DB_PORT', '5432'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
